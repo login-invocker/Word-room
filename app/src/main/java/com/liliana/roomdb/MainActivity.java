@@ -23,31 +23,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText edt;
     private Button btn;
     private WordViewModel model;
-    private  Adapter adapter;
+    private Adapter adapter;
     private TextView txtCountAllWord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addControl();
         addEvent();
-        adapter = new Adapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        model = new ViewModelProvider(this).get(WordViewModel.class);
-        model.GetALlWord().observe(this, new Observer<List<Word>>() {
-            @Override
-            public void onChanged(List<Word> words) {
-                adapter.setWords(words);
-            }
-        });
-        //count word
-        model.countWord().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer integer) {
-                txtCountAllWord.setText(String.valueOf(integer));
-            }
-        });
         // delete
         ItemTouchHelper helper = new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -76,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  int position = viewHolder.getAdapterPosition();
+                //  int position = viewHolder.getAdapterPosition();
                 Word word = new Word(edt.getText().toString());
                 model.Insert(word);
             }
@@ -84,10 +68,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addControl() {
-        txtCountAllWord=findViewById(R.id.txt_count_all_word);
+        txtCountAllWord = findViewById(R.id.txt_count_all_word);
         recyclerView = findViewById(R.id.rec);
         edt = findViewById(R.id.edt);
         btn = findViewById(R.id.btn);
+        adapter = new Adapter(this);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        model = new ViewModelProvider(this).get(WordViewModel.class);
+        model.GetALlWord().observe(this, new Observer<List<Word>>() {
+            @Override
+            public void onChanged(List<Word> words) {
+                adapter.setWords(words);
+            }
+        });
     }
 
     public void deleteAllWord(View view) {

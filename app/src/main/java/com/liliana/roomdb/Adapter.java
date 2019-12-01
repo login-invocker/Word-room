@@ -26,7 +26,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.WordViewHodel> {
     public Adapter(Context context) {
         mlayoutInflater = LayoutInflater.from(context);
     }
-
     @NonNull
     @Override
     public WordViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
